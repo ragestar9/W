@@ -1,22 +1,19 @@
 import { useState, useEffect, useCallback } from 'react'
-import { supabase } from '@/lib/supabase'
 
+// Explicit status machine: 'loading' | 'ready' | 'error'.
+// Never conflate "still loading" with "request failed" — a hook that
+// returns null for both produces a spinner that never resolves.
 export function useFetch(query, deps = []) {
-  const [data, setData] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [state, setState] = useState({ status: 'loading', data: null, error: null })
 
   const refetch = useCallback(async () => {
-    setLoading(true)
-    setError(null)
+    setState({ status: 'loading', data: null, error: null })
     try {
       const result = await query()
-      if (result.error) throw result.error
-      setData(result.data)
+      if (result?.error) throw result.error
+      setState({ status: 'ready', data: result?.data ?? result, error: null })
     } catch (err) {
-      setError(err)
-    } finally {
-      setLoading(false)
+      setState({ status: 'error', data: null, error: err })
     }
   }, deps)
 
@@ -24,5 +21,5 @@ export function useFetch(query, deps = []) {
     refetch()
   }, [refetch])
 
-  return { data, loading, error, refetch }
+  return { ...state, loading: state.status === 'loading', refetch }
 }
