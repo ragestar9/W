@@ -10,5 +10,10 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID || '',
 }
 
-export const app = initializeApp(firebaseConfig)
-export const auth = getAuth(app)
+// When Firebase is not configured (missing env vars), do not initialize.
+// Calling initializeApp with an empty apiKey throws auth/invalid-api-key
+// and crashes the entire app before any page can render.
+export const firebaseConfigured = Boolean(firebaseConfig.apiKey && firebaseConfig.projectId && firebaseConfig.appId)
+
+export const app = firebaseConfigured ? initializeApp(firebaseConfig) : null
+export const auth = app ? getAuth(app) : null

@@ -7,7 +7,7 @@ import {
   signOut as fbSignOut,
   onAuthStateChanged,
 } from 'firebase/auth'
-import { auth as fbAuth } from '@/lib/firebase'
+import { auth as fbAuth, firebaseConfigured } from '@/lib/firebase'
 import { supabase } from '@/lib/supabase'
 
 const AuthContext = createContext(null)
@@ -34,6 +34,12 @@ export function AuthProvider({ children }) {
   }, [])
 
   useEffect(() => {
+    // Without Firebase config there is no auth backend to listen to.
+    // Resolve immediately so pages render their signed-out state.
+    if (!firebaseConfigured || !fbAuth) {
+      setLoading(false)
+      return
+    }
     const unsub = onAuthStateChanged(fbAuth, async (fbUser) => {
       setUser(fbUser)
       if (fbUser) {
@@ -46,9 +52,18 @@ export function AuthProvider({ children }) {
     return unsub
   }, [fetchProfile])
 
+  const requireAuth = () => {
+    if (!firebaseConfigured || !fbAuth) {
+      const err = new Error('Authentication is not configured. Set VITE_FIREBASE_* environment variables.')
+      setError(err.message)
+      throw err
+    }
+  }
+
   const signIn = useCallback(async (email, password) => {
     setError(null)
     try {
+      requireAuth()
       await signInWithEmailAndPassword(fbAuth, email, password)
     } catch (err) {
       setError(err.message)
@@ -59,6 +74,7 @@ export function AuthProvider({ children }) {
   const signUp = useCallback(async (email, password) => {
     setError(null)
     try {
+      requireAuth()
       const { user: newUser } = await createUserWithEmailAndPassword(fbAuth, email, password)
       await supabase.from('profiles').insert({
         id: newUser.uid,
@@ -75,6 +91,7 @@ export function AuthProvider({ children }) {
   const signInWithGoogle = useCallback(async () => {
     setError(null)
     try {
+      requireAuth()
       const provider = new GoogleAuthProvider()
       const { user: gUser } = await signInWithPopup(fbAuth, provider)
       const { data: existing } = await supabase
@@ -97,7 +114,7 @@ export function AuthProvider({ children }) {
   }, [])
 
   const signOut = useCallback(async () => {
-    await fbSignOut(fbAuth)
+    if (fbAuth) await fbSignOut(fbAuth)
     setUser(null)
     setProfile(null)
   }, [])
