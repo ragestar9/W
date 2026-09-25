@@ -1,0 +1,70 @@
+@import 'tailwindcss';
+
+@theme inline {
+  /* ── Indigo palette (OKLCH) ── */
+  --color-indigo-50: oklch(0.97 0.02 283);
+  --color-indigo-100: oklch(0.93 0.04 283);
+  --color-indigo-200: oklch(0.87 0.08 283);
+  --color-indigo-300: oklch(0.78 0.12 283);
+  --color-indigo-400: oklch(0.68 0.17 283);
+  --color-indigo-500: oklch(0.58 0.22 283);
+  --color-indigo-600: oklch(0.50 0.22 283);
+  --color-indigo-700: oklch(0.43 0.20 283);
+  --color-indigo-800: oklch(0.36 0.16 283);
+  --color-indigo-900: oklch(0.28 0.12 283);
+  --color-indigo-950: oklch(0.18 0.08 283);
+
+  /* ── Semantic tokens (resolved by data-theme) ── */
+  --color-canvas: var(--th-canvas);
+  --color-surface: var(--th-surface);
+  --color-surface-raised: var(--th-surface-raised);
+  --color-foreground: var(--th-foreground);
+  --color-muted: var(--th-muted);
+  --color-border: var(--th-border);
+  --color-primary: var(--th-primary);
+  --color-primary-foreground: var(--th-primary-foreground);
+  --color-accent: var(--th-accent);
+  --color-danger: oklch(0.63 0.24 25);
+  --color-success: oklch(0.72 0.19 155);
+  --color-warning: oklch(0.80 0.18 85);
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+}
+
+/* ── Dark theme (default) ── */
+:root[data-theme='dark'] {
+  --th-canvas: oklch(0.13 0.02 283);
+  --th-surface: oklch(0.17 0.025 283);
+  --th-surface-raised: oklch(0.21 0.03 283);
+  --th-foreground: oklch(0.93 0.01 283);
+  --th-muted: oklch(0.60 0.02 283);
+  --th-border: oklch(0.28 0.04 283);
+  --th-primary: oklch(0.68 0.17 283);
+  --th-primary-foreground: oklch(0.98 0.005 283);
+  --th-accent: oklch(0.58 0.22 283);
+}
+
+/* ── Light theme ── */
+:root[data-theme='light'] {
+  --th-canvas: oklch(0.98 0.005 283);
+  --th-surface: oklch(0.96 0.01 283);
+  --th-surface-raised: oklch(1.0 0 0);
+  --th-foreground: oklch(0.18 0.03 283);
+  --th-muted: oklch(0.50 0.03 283);
+  --th-border: oklch(0.87 0.03 283);
+  --th-primary: oklch(0.50 0.22 283);
+  --th-primary-foreground: oklch(0.98 0.005 283);
+  --th-accent: oklch(0.58 0.22 283);
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+*, *::before, *::after {
+  border-color: var(--color-border);
+}
