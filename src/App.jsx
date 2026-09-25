@@ -10,6 +10,16 @@ import { SignInPage } from '@/pages/SignIn'
 import { SignUpPage } from '@/pages/SignUp'
 import { DashboardPage } from '@/pages/Dashboard'
 import { NotFoundPage } from '@/pages/NotFound'
+import { ApiKeysPage } from '@/pages/dashboard/ApiKeys'
+import { UsagePage } from '@/pages/dashboard/Usage'
+import { PlaygroundPage } from '@/pages/dashboard/Playground'
+import { BillingPage } from '@/pages/dashboard/Billing'
+import { AdminUpstreamsPage } from '@/pages/admin/AdminUpstreams'
+import { AdminKeysPage } from '@/pages/admin/AdminKeys'
+import { AdminModelsPage } from '@/pages/admin/AdminModels'
+import { AdminUsersPage } from '@/pages/admin/AdminUsers'
+import { AdminLogsPage } from '@/pages/admin/AdminLogs'
+import { AdminSettingsPage } from '@/pages/admin/AdminSettings'
 
 const routes = {
   '/': LandingPage,
@@ -20,6 +30,16 @@ const routes = {
   '/sign-in': SignInPage,
   '/sign-up': SignUpPage,
   '/dashboard': DashboardPage,
+  '/dashboard/keys': ApiKeysPage,
+  '/dashboard/usage': UsagePage,
+  '/dashboard/playground': PlaygroundPage,
+  '/dashboard/billing': BillingPage,
+  '/admin': AdminUpstreamsPage,
+  '/admin/keys': AdminKeysPage,
+  '/admin/models': AdminModelsPage,
+  '/admin/users': AdminUsersPage,
+  '/admin/logs': AdminLogsPage,
+  '/admin/settings': AdminSettingsPage,
 }
 
 export function App() {
